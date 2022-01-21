@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import HeaderGoBack from "../../components/HeaderGoBack";
 import API from "../../services/api";
@@ -6,9 +6,13 @@ import API from "../../services/api";
 import { styles } from "./styles";
 
 export default function Lamps() {
+  const [lamp, setLamp] = useState("");
+
   async function load() {
-    // const res = await API.get("/temperatura");
-    // console.log("RESPOSTA DO SERVER: ", res);
+    const res = await API.get("/luz");
+    console.log("RESPOSTA DO SERVER: ", res.data);
+
+    setLamp(res.data);
   }
 
   async function turnOnOff() {
@@ -27,7 +31,9 @@ export default function Lamps() {
       <View>
         <View style={styles.stateContent}>
           <Text style={styles.stateTitle}>Ultima leitura</Text>
-          <Text style={styles.stateValue}>Valor</Text>
+          <Text style={styles.stateValue}>
+            {lamp === "1" ? "Ligada" : "Desligada"}
+          </Text>
         </View>
 
         <TouchableOpacity style={styles.button} onPress={() => turnOnOff()}>

@@ -15,10 +15,12 @@ import { styles } from "./styles";
 
 export default function AirConditioner() {
   const [value, setValue] = useState("");
+  const [temperature, setTemperature] = useState("");
 
   async function load() {
-    // const res = await API.get("/temperatura");
-    // console.log("RESPOSTA DO SERVER: ", res);
+    const res = await API.get("/temperatura");
+    console.log("RESPOSTA DO SERVER: ", res.data);
+    setTemperature(res.data);
   }
 
   async function changeTemperature() {
@@ -49,7 +51,9 @@ export default function AirConditioner() {
             size={42}
             color="#26F0D6"
           />
-          <Text style={styles.temperatureTitle}>Temperatura Valor °C</Text>
+          <Text style={styles.temperatureTitle}>
+            Temperatura {temperature} °C
+          </Text>
         </View>
 
         <View style={styles.divider} />
