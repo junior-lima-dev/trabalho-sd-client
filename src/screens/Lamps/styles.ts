@@ -32,4 +32,14 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     color: "#fff",
   },
+  lampContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 20,
+    justifyContent: "center",
+  },
+  lampTitle: {
+    fontFamily: fonts.robotoBold,
+    fontSize: 20,
+  },
 });

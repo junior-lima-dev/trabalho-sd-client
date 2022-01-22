@@ -48,4 +48,17 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     color: "#fff",
   },
+  stateContent: {
+    alignItems: "center",
+    marginTop: 15,
+  },
+  stateTitle: {
+    fontFamily: fonts.robotoLight,
+    fontSize: 14,
+  },
+  stateValue: {
+    marginTop: 2,
+    fontFamily: fonts.robotoBold,
+    fontSize: 35,
+  },
 });

@@ -11,23 +11,38 @@ import { colors } from "../../theme/colors";
 
 export default function Sprinkler() {
   const [splinkler, setSprinkler] = useState("");
+  const [lastState, setLastState] = useState("");
 
   async function load() {
-    // const res = await API.get("/api/temperature");
-    // console.log("RESPOSTA DO SERVER: ", res.data);
+    const res = await API.get("/hum");
+    const res2 = await API.get("/wat");
 
-    const teste = fetch("http://127.0.0.1:46244/api/temperature").then(
-      (res) => {
-        console.log("TESTE: ", res);
-      }
-    );
-
-    // setSprinkler(res.data);
+    setSprinkler(res.data);
+    setLastState(res2.data === "ON" ? "state: ON\n" : "state: OFF\n");
   }
 
   async function irrigate() {
-    // const res = await API.get("/temperatura");
-    // console.log("RESPOSTA DO SERVER: ", res);
+    const data = {
+      estado: "1",
+      name: "Wat",
+    };
+
+    const res = await API.post("/onwat", data);
+    console.log("RESPOSTA DO SERVER: ", res.data);
+
+    setLastState(res.data);
+  }
+
+  async function stopIrrigation() {
+    const data = {
+      estado: "0",
+      name: "Wat",
+    };
+
+    const res = await API.post("/offwat", data);
+    console.log("RESPOSTA DO SERVER: ", res.data);
+
+    setLastState(res.data);
   }
 
   useEffect(() => {
@@ -53,29 +68,19 @@ export default function Sprinkler() {
         <View style={styles.stateContent}>
           <Text style={styles.stateTitle}>Ultima leitura</Text>
           <Text style={styles.stateValue}>
-            {"1" === "1" ? "Ligada" : "Desligada"}
+            {lastState === "state: ON\n" ? "Ligada" : "Desligada"}
           </Text>
         </View>
 
-        <Button name="Irrigar" color={colors.primary} onPress={() => null} />
-
-        {/* <TouchableOpacity style={styles.button} onPress={() => irrigate()}>
-          <Text style={styles.textButton}>Irrigar</Text>
-        </TouchableOpacity> */}
-
-        <TouchableOpacity
-          style={[styles.button, { backgroundColor: "#44E66A" }]}
-          onPress={() => null}
-        >
-          <Text style={styles.textButton}>Ligar</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.button, { backgroundColor: "#F0240E" }]}
-          onPress={() => null}
-        >
-          <Text style={styles.textButton}>Desligar</Text>
-        </TouchableOpacity>
+        <Button
+          name={lastState === "state: ON\n" ? "Desligar" : "Irrigar"}
+          color={lastState === "state: ON\n" ? "#F0240E" : "#44E66A"}
+          onPress={
+            lastState === "state: ON\n"
+              ? () => stopIrrigation()
+              : () => irrigate()
+          }
+        />
       </View>
     </View>
   );
